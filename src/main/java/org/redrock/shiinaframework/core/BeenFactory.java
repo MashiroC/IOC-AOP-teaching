@@ -3,8 +3,7 @@ package org.redrock.shiinaframework.core;
 import org.redrock.shiinaframework.annotation.Autowired;
 import org.redrock.shiinaframework.annotation.Component;
 import org.redrock.shiinaframework.annotation.Controller;
-import org.redrock.shiinaframework.demo.TestController;
-import org.redrock.shiinaframework.util.CastUtil;
+import org.redrock.shiinaframework.demo.MainController;
 import org.redrock.shiinaframework.util.ReflectUtil;
 
 import java.lang.annotation.Annotation;
@@ -79,21 +78,19 @@ public class BeenFactory {
      */
     private void init() {
         Set<Class<?>> classSet = classLoader.getClassSet();
-
         //先加载类的集合，创建映射
         for (Class<?> clazz : classSet) {
-            Component component = clazz.getAnnotation(Component.class);
-            Controller controller = clazz.getAnnotation(Controller.class);
-            if (component != null || controller != null) {
-
-                Object obj = ReflectUtil.newInstance(clazz);
-                componentMap.put(clazz, obj);
-                componentSet.add(clazz);
-
-                if (controller != null) {
-                    controllerMap.put(clazz, obj);
+            Annotation[] annotations = clazz.getAnnotations();
+            for (Annotation annotation : annotations) {
+                Class<? extends Annotation> an =annotation.annotationType();
+                if (an.equals(Component.class) || an.isAnnotationPresent(Component.class)) {
+                    Object obj = ReflectUtil.newInstance(clazz);
+                    componentMap.put(clazz, obj);
+                    componentSet.add(clazz);
+                    if (!an.equals(Component.class)) {
+                        controllerMap.put(clazz, obj);
+                    }
                 }
-
             }
         }
 
@@ -121,6 +118,10 @@ public class BeenFactory {
             return t;
         }
         throw new RuntimeException("been not found");
+    }
+
+    public static void main(String[] args) {
+        System.out.println(MainController.class.getAnnotation(Component.class));
     }
 
 }

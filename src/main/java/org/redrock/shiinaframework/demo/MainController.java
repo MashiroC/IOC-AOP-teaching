@@ -13,10 +13,10 @@ import org.redrock.shiinaframework.been.ShiinaContext;
  * @description: 测试用controller
  */
 @Controller
-public class TestController {
+public class MainController {
 
     @Autowired
-    private TestService testService;
+    private MainService mainService;
 
     @RequestMapper(value = "/hello")
     public ResponseEntity hello(ShiinaContext context) {
@@ -30,6 +30,6 @@ public class TestController {
 
     @RequestMapper(value = "/world", method = HttpMethod.POST)
     public ResponseEntity postWorld(ShiinaContext context) {
-        return testService.yoyoyo();
+        return mainService.yoyoyo();
     }
 }

@@ -9,7 +9,7 @@ import org.redrock.shiinaframework.been.ResponseEntity;
  * @description: 测试用service
  */
 @Component
-public class TestService {
+public class MainService {
     public ResponseEntity yoyoyo() {
         return new ResponseEntity(10000, "hello world!(post)");
     }

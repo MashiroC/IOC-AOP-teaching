@@ -13,11 +13,22 @@ import java.util.Enumeration;
 /**
  * @author: Shiina18
  * @date: 2019/3/6 19:55
- * @description:
+ * @description: 封装过的处理器
  */
 public class Handle {
-    private static final Gson gson = new Gson();
+    /**
+     * 全局统一的Json处理库
+     */
+    private static final Gson GSON = new Gson();
+
+    /**
+     * 用来处理请求的方法
+     */
     private Method method;
+
+    /**
+     * 该方法所属的controller
+     */
     private Object controller;
 
     Handle(Object controller, Method method) {
@@ -25,6 +36,11 @@ public class Handle {
         this.method = method;
     }
 
+    /**
+     * 根据上下文执行方法
+     * @param context 框架的上下文
+     * @return 如果有返回 那么输出到网络流
+     */
     String invoke(ShiinaContext context) {
         HttpServletRequest request = context.getRequest();
         HttpServletResponse response = context.getResponse();
@@ -43,7 +59,7 @@ public class Handle {
             e.printStackTrace();
         }
         if (res != null) {
-            return gson.toJson(res);
+            return GSON.toJson(res);
         }
         return null;
     }

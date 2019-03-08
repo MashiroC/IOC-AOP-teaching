@@ -8,15 +8,17 @@ import java.util.Map;
 /**
  * @author: Shiina18
  * @date: 2019/3/7 15:16
- * @description:
+ * @description: 框架的上下文
  */
 public class ShiinaContext {
-
 
     private HttpServletRequest request;
 
     private HttpServletResponse response;
 
+    /**
+     * 参数map
+     */
     private Map<String,String> paramMap;
 
     private RouteInfo routeInfo;

@@ -10,13 +10,14 @@ import java.util.Properties;
 /**
  * @author: Shiina18
  * @date: 2019/3/5 20:41
- * @description:
+ * @description: 配置加载器
  */
 public class PropsLoader {
 
     private static PropsLoader singleton;
 
     private Properties properties;
+
     private static final String PROPS_PATH = "/WEB-INF/application.properties";
 
     public static PropsLoader getInstance() {
@@ -26,6 +27,10 @@ public class PropsLoader {
         throw new RuntimeException("PropsLoader null");
     }
 
+    /**
+     * 初始化配置
+     * @param context servlet上下文
+     */
     public static void init(ServletContext context){
         if(singleton==null){
             synchronized (PropsLoader.class){
@@ -36,6 +41,10 @@ public class PropsLoader {
         }
     }
 
+    /**
+     * 不允许使用任何方式调用无参构造器
+     * @throws IllegalAccessException
+     */
     private PropsLoader() throws IllegalAccessException {
         throw new IllegalAccessException();
     }

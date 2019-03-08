@@ -5,7 +5,7 @@ import lombok.Data;
 /**
  * @author: Shiina18
  * @date: 2019/3/7 15:14
- * @description:
+ * @description: 返回的数据类
  */
 @Data
 public class ResponseEntity<T> {

@@ -4,38 +4,56 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
+/**
+ * @author: Shiina18
+ * @date: 2019/3/8 10:42
+ * @description: 反射工具类
+ */
 public class ReflectUtil {
+
+    /**
+     * 使用反射获得一个类的对象
+     * 该类必须有一个无参构造器
+     *
+     * @param clazz 类
+     * @return 类的对象
+     */
     public static Object newInstance(Class<?> clazz) {
         Object object = null;
         try {
             object = clazz.newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
         return object;
     }
 
+    /**
+     * 使用反射获得一个类的对象
+     * 该类必须有一个以一个字符串为参数的构造器
+     *
+     * @param clazz 类
+     * @param value 构造器参数
+     * @return 类的对象
+     */
     public static Object newInstance(Class<?> clazz, String value) {
         Object object = null;
         try {
             Constructor constructor = clazz.getDeclaredConstructor(String.class);
             object = constructor.newInstance(value);
-        } catch (NoSuchMethodException e) {
+        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
             e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             object = -1;
         }
         return object;
     }
 
+    /**
+     * 检验一个对象是否为包装类(Integer Long Double)
+     * @param clazz 对象的类
+     * @return 是否为包装类
+     */
     public static boolean isPrimitive(Class<?> clazz) {
         if (!clazz.isPrimitive()) {
             switch (clazz.getName()) {
@@ -60,6 +78,13 @@ public class ReflectUtil {
         return true;
     }
 
+    /**
+     * 获得值类型的包装类
+     * 如果传参不是值类型 那么直接返回原类型
+     *
+     * @param clazz 值类型
+     * @return 包装类
+     */
     public static Class<?> getNormalClass(Class<?> clazz) {
         String name = clazz.getName();
         switch (name) {
@@ -75,10 +100,17 @@ public class ReflectUtil {
                 return Character.class;
             case "boolean":
                 return Boolean.class;
+            default:
+                return clazz;
         }
-        return clazz;
     }
 
+    /**
+     * 使用反射设置某对象的参数的值
+     * @param field 参数
+     * @param obj 对象
+     * @param value 值
+     */
     public static void setFieldValue(Field field, Object obj, Object value) {
         try {
             if (!field.isAccessible()) {

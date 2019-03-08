@@ -12,13 +12,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * @author: Shiina18
+ * @date: 2019/3/5 21:31
+ * @description: 单一入口Servlet
+ */
 @WebServlet("/*")
 public class DispatcherServlet extends HttpServlet {
 
     private PropsLoader propsLoader = null;
     private ClassLoader classLoader = null;
     private BeenFactory beenFactory = null;
-    private RouteHelper routeHelper = null;
+    private RouteEngine routeEngine = null;
+
+    @Override
+    public void init() {
+        PropsLoader.init(getServletContext());
+        propsLoader = PropsLoader.getInstance();
+        classLoader = ClassLoader.getInstance();
+        beenFactory = BeenFactory.getInstance();
+        routeEngine = RouteEngine.getInstance();
+    }
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -32,7 +46,7 @@ public class DispatcherServlet extends HttpServlet {
             routeInfo.setUriParam(uriInfo[1]);
         }
 
-        Handle handle = routeHelper.getHandle(routeInfo);
+        Handle handle = routeEngine.getHandle(routeInfo);
 
         if (handle == null) {
             res = "404 NOT FOUNT";
@@ -52,12 +66,5 @@ public class DispatcherServlet extends HttpServlet {
         }
     }
 
-    @Override
-    public void init() throws ServletException {
-        PropsLoader.init(getServletContext());
-        propsLoader = PropsLoader.getInstance();
-        classLoader = ClassLoader.getInstance();
-        beenFactory = BeenFactory.getInstance();
-        routeHelper = RouteHelper.getInstance();
-    }
+
 }

@@ -12,12 +12,18 @@ import java.util.Set;
 /**
  * @author: Shiina18
  * @date: 2019/3/5 20:34
- * @description:
+ * @description: 类加载器
  */
 public class ClassLoader {
 
+    /**
+     * 单例
+     */
     private static ClassLoader singleton;
 
+    /**
+     * 包下面所有类的集合
+     */
     private Set<Class<?>> classSet;
 
     private static final String PROTOCOL_TYPE = "file";
@@ -30,6 +36,10 @@ public class ClassLoader {
 
     private static final String EMPTY_STRING = "";
 
+    /**
+     * 获得单例
+     * @return 单例
+     */
     public static ClassLoader getInstance() {
         if (singleton == null) {
             synchronized (ClassLoader.class) {
@@ -41,6 +51,10 @@ public class ClassLoader {
         return singleton;
     }
 
+    /**
+     * 不允许任何方式调用无参构造器
+     * @throws IllegalAccessException 异常
+     */
     private ClassLoader() throws IllegalAccessException {
         throw new IllegalAccessException();
     }
@@ -49,7 +63,10 @@ public class ClassLoader {
         load(propsLoader);
     }
 
-
+    /**
+     * 包扫描
+     * @param propsLoader 配置加载器
+     */
     private void load(PropsLoader propsLoader) {
         classSet = new HashSet<>();
 
@@ -74,6 +91,11 @@ public class ClassLoader {
         return this.classSet;
     }
 
+    /**
+     * 加载类
+     * @param packageName 包名
+     * @param packagePath 包路径
+     */
     private void loadClass(String packageName, String packagePath) {
         File[] files = new File(packagePath).listFiles(file -> file.isDirectory() || file.getName().endsWith(END_WITH_CLASS));
         if (files != null) {

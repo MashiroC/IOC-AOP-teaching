@@ -8,10 +8,9 @@ import java.util.Objects;
 /**
  * @author: Shiina18
  * @date: 2019/3/6 20:27
- * @description:
+ * @description: 路由信息
  */
 public class RouteInfo {
-
 
     private String uri;
 
